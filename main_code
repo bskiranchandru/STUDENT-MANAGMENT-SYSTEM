@@ -1,0 +1,373 @@
+C PROJECT WORK
+Code:
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+#include<math.h>
+#define Student struct Stud
+void add(FILE * fp,int); //to add to list
+void del(FILE * fp,int);//to delete from list
+void delall(FILE * fp);//to delete the entire file
+void modify(FILE * fp);//to modify a record
+void displayList(FILE * fp);//display whole list
+void searchRecord(FILE *fp,int);//find a particular record
+void printChar(char ch,int n);//printing a character ch n times
+void printHead();//printing head line for each screen
+void marks_sheet();//to generate the masrks sheet
+struct Stud
+{
+ char name[100];
+ char branch[50];
+ int roll;
+ long long int contact;
+ char add[100];
+ int chem,elec,cs,bio,mech,maths,age;
+ 
+}s;
+int main()
+{
+FILE * fp;
+Student s;
+int option;
+char another;
+if((fp=fopen("c:studentInfo.txt","rb+"))==NULL)
+{
+ if((fp=fopen("c:studentInfo.txt","wb+"))==NULL)
+ {
+ printf("can't open file");
+ return 0;
+ }
+}
+printHead();
+printf("\n\n\t\tCREATED BY");
+printf("\n\n\t\tBHARAT KUMAR NAIK");
+printf("\n\n\t\tKIRAN B S");
+printf("\n\n\t\tKOUSHIK P V");
+printf("\n\t\tpress any key to continue");
+while(1)
+{ int r,n;
+ printHead();
+ printf("\n\t");
+ printChar('-',64);
+ printf("\n\n\t\t\t1. ADD Student");
+ printf("\n\n\t\t\t2. DELETE Student");
+ printf("\n\n\t\t\t3. MODIFY Student");
+ printf("\n\n\t\t\t4. DISPLAY Student LIST");
+ printf("\n\n\t\t\t5. Search Record");
+ printf("\n\n\t\t\t6. DELETE entire file");
+ printf("\n\n\t\t\t7. MARKS SHEET generation");
+ printf("\n\n\t\t\t0. EXIT");
+ printf("\n\n\t\tEnter Your Option :--> ");
+ scanf("%d",&option);
+ switch(option)
+ {
+ case 0: return 1;
+ break;
+ case 1: printf("enter the no of students you wanted to enter:");
+ scanf("%d",&n);
+ add(fp,n);
+ break;
+ case 2: printf("Enter Register Number of student to be delete:");
+ scanf("%d",&r);
+ del(fp,r);
+ break;
+ case 3: modify(fp);
+ break;
+ case 4: displayList(fp);
+ break;
+ case 5: printf("Enter Register Number of student :");
+ scanf("%d",&r);
+ searchRecord(fp,r);
+ break;
+ case 6:delall(fp);
+ break;
+ case 7:marks_sheet();
+ break;
+ default: printf("\n\t\tYou Pressed wrong key");
+ printf("\n\t\tProgram terminated");
+ exit(0);
+ }
+}
+return 1;
+}
+//----printing character ch at n times ------
+void printChar(char ch,int n)
+{
+ while(n--)
+ {
+ putchar(ch);
+ }
+}
+//-----Printing Head Line of the program -----
+void printHead()
+{ system("cls");
+printf("\n\n\t");
+printChar('=',16);
+printf("[STUDENT] [INFORMATION] [SYSTEM]");
+printChar('=',16);
+printf("\n");
+}
+// ==========ADDING NEW RECORD==========================
+void add(FILE * fp,int n)
+{
+printHead(); 
+int i;
+int count_lines = 1;
+ char chr;
+chr = getc(fp);
+ while (chr != EOF)
+ {
+ if (chr == '\n')
+ {
+ count_lines = count_lines + 1;
+ }
+ chr = getc(fp);
+ }
+ int x=(count_lines/14);
+for(i=0;i<n;i++)
+{ x++;
+ //extract character from file and store in chr
+ printf("\n\n\t\tEnter Roll number \t");
+ scanf("%d",&s.roll);
+ printf("\n\n\t\t%d rollno's reg no is :%d",s.roll,x);
+ fprintf(fp,"\nreg no=%d\n",x+1);
+ fprintf(fp,"ROLL NO=%d\n",s.roll);
+ printf("\n\n\t\tEnter Full Name of Student\t");
+ scanf("%s",s.name); //fgets takes an extra \n character as input
+ fprintf(fp,"NAME:%s\n",s.name);
+ printf("\n\n\t\tEnter Branch\t");
+ scanf("%s",s.branch);
+ fprintf(fp,"BRANCH:%s\n",s.branch);
+ printf("\n\n\t\tEnter the student age:");
+ scanf("%d",&s.age);
+ if(s.age>=100)
+ {printf("reenter the age:");
+ scanf("%d",&s.age);}
+ fprintf(fp,"AGE=%d\n",s.age);
+ printf("\n\n\t\tEnter the student CONTACT NO:");
+ scanf("%lld",&s.contact);
+ if (s.contact>9999999999 ||s.contact<=999999999)
+ {
+ printf("contact no should be 10 digit");
+ scanf("%lld",&s.contact);
+ }
+ fprintf(fp,"CONTACT NO=%lld\n",s.contact);
+ printf("\n\n\t\tEnter the student ADDRESS :");
+ scanf("%s",s.add);
+ fprintf(fp,"ADDRESS=%s\n",s.add);
+ printf("\n\n\t\tEnter the student CHEMISTRY MARKS:");
+ scanf("%d",&s.chem);
+ if(s.chem>100)
+ {printf("enter proper marks:");
+ scanf("%d",&s.chem);}
+ fprintf(fp,"CHEMISTRY MARKS=%d\n",s.chem);
+ printf("\n\n\t\tEnter the student ELECTRONICS MARKS:");
+ scanf("%d",&s.elec);
+ if(s.elec>100)
+ {printf("enter proper marks:");
+ scanf("%d",&s.elec);}
+ fprintf(fp,"ELECTRONICS MARKS=%d\n",s.elec);
+ printf("\n\n\t\tEnter the student CS MARKS:");
+ scanf("%d",&s.cs);
+ if(s.cs>100)
+ {printf("enter proper marks:");
+ scanf("%d",&s.cs);}
+ fprintf(fp,"CS MARKS=%d\n",s.cs);
+ printf("\n\n\t\tEnter the student BIOLOGY MARKS:");
+ scanf("%d",&s.bio);
+ if(s.bio>100)
+ {printf("enter proper marks:");
+ scanf("%d",&s.bio);}
+ fprintf(fp,"BIOLOGY MARKS=%d\n",s.bio);
+ printf("\n\n\t\tEnter the student MECHANICS MARKS:");
+ scanf("%d",&s.mech);
+ if(s.mech>100)
+ {printf("enter proper marks:");
+ scanf("%d",&s.mech);}
+ fprintf(fp,"MECHANICS MARKS=%d\n",s.mech);
+ printf("\n\n\t\tEnter the student MATHS MARKS:");
+ scanf("%d",&s.maths);
+ if(s.maths>100)
+ {printf("enter the proper marks:");
+ scanf("%d",&s.maths);}
+ fprintf(fp,"MATHS MARKS=%d\n",s.maths);
+ printChar('-',64);
+} 
+}
+//===================DELETING entire file ============
+void delall(FILE * fp)
+{FILE *fileptr2;
+ fileptr2 = fopen("replica.txt", "w");
+ remove("c:studentInfo.txt");
+ rename("replica.txt", "c:studentInfo.txt");
+ fclose(fileptr2);
+ printf("file deleted");
+}
+//===================DELETING A RECORD FROM LIST ============
+void del(FILE * fp,int r)
+{int i;
+for(i=0;i<=14;i++)
+{ 
+ int delete_line;
+ delete_line=((r-1)*15);
+ FILE *fileptr2;
+ fp=fopen("c:studentInfo.txt","r");
+ fileptr2 = fopen("replica.txt", "w"); 
+ int temp=0;
+ char ch;
+ //open new file in write mode
+ ch = getc(fp);
+ while (ch != EOF)
+ {
+ ch = getc(fp);
+ if (ch == '\n')
+ temp++;
+ //except the line to be deleted
+ if (temp != delete_line)
+ {
+ //copy all lines in file replica.c
+ putc(ch, fileptr2);
+ }
+ }
+ fclose(fp);
+ fclose(fileptr2);
+ remove("c:studentInfo.txt");
+ rename("replica.txt", "c:studentInfo.txt");
+}
+printf("record deleted");
+}
+//===========MODIFY A RECORD ===========================
+void modify(FILE * fp)
+{int r;
+printf("enter the serialno of student to be modified:");
+scanf("%d",&r);
+del(fp,r);
+add(fp,1);
+}
+//====================DISPLAY THE LIST =================
+void displayList(FILE * fp)
+{ printHead();
+ Student s;
+ int i,siz=sizeof(s);
+ rewind(fp);
+char c=fgetc(fp);
+while(c!=EOF)
+ {
+ printf("%c",c);
+ c=fgetc(fp);
+ 
+ }
+ fclose(fp);
+ printf("\n\n\n\t");
+ printChar('*',65);
+ printf("\n\n\t");
+ system("pause");
+}
+//===================search record========================
+void searchRecord(FILE *fp,int r)
+{ 
+ int delete_line,i;
+for(i=0;i<15;i++)
+ { if(r== 1)
+ delete_line=r;
+ else
+ delete_line=((r-1)*15);
+ delete_line=delete_line+i;
+ int temp=0;
+ char ch;
+ //open new file in write mode
+ fp=fopen("c:studentInfo.txt","r");
+ ch = getc(fp);
+ while (ch != EOF)
+ {
+ ch = getc(fp);
+ if (ch == '\n')
+ temp++;
+ //except the line to be deleted
+ if (temp == delete_line)
+ {
+ //copy all lines in file replica.c
+ printf("%c",ch);
+ }
+ }
+ }
+}
+//=====================MARks SHEET ===================
+void marks_sheet()
+{ FILE *fg;
+ fg=fopen("marksSheet.txt","w");
+ printf("\n\n\t\tEnter Roll number \t");
+ scanf("%d",&s.roll);
+ printf("\n\n\t\tEnter Full Name of Student\t");
+ scanf("%s",s.name); //fgets takes an extra \n character as input
+ printf("\n\n\t\tEnter Branch\t");
+ scanf("%s",s.branch);
+ printf("\n\n\t\tEnter the student CHEMISTRY MARKS:");
+ scanf("%d",&s.chem);
+ if(s.chem>100)
+ {printf("enter proper marks:");
+ scanf("%d",&s.chem);}
+ printf("\n\n\t\tEnter the student ELECTRONICS MARKS:");
+ scanf("%d",&s.elec);
+ if(s.elec>100)
+ {printf("enter proper marks:");
+ scanf("%d",&s.elec);}
+ printf("\n\n\t\tEnter the student CS MARKS:");
+ scanf("%d",&s.cs);
+ if(s.cs>100)
+ {printf("enter proper marks:");
+ scanf("%d",&s.cs);}
+ printf("\n\n\t\tEnter the student BIOLOGY MARKS:");
+ scanf("%d",&s.bio);
+ if(s.bio>100)
+ {printf("enter proper marks:");
+ scanf("%d",&s.bio);}
+ printf("\n\n\t\tEnter the student MECHANICS MARKS:");
+ scanf("%d",&s.mech);
+ if(s.mech>100)
+ {printf("enter proper marks:");
+ scanf("%d",&s.mech);}
+ printf("\n\n\t\tEnter the student MATHS MARKS:");
+ scanf("%d",&s.maths);
+ if(s.maths>100)
+ {printf("enter proper marks:");
+ scanf("%d",&s.maths);}
+ printChar('*',64);
+ printf("===================================================\n");
+ printf("MARKSHEET OF COLLEGE:PES UNIVERSITY\n");
+ printf("===================================================\n");
+ printf("Roll No.: %d Student Name: %s\n", s.roll, s.name);
+ printf("---------------------------------------------------\n");
+ printf("SUBJECT\t\t\tMARKS\n");
+ printf("---------------------------------------------------\n");
+ printf("MATHS\t\t\t %d \n", s.maths);
+ printf("MECHANICS\t\t %d \n", s.mech);
+ printf("BIOLOGY\t\t\t %d \n", s.bio);
+ printf("ELECTRONICS\t\t %d \n", s.elec);
+ printf("COMPUTER SCIENCE\t %d \n", s.cs);
+ printf("CHEMISTRY\t\t %d \n", s.chem);
+ printf("---------------------------------------------------\n");
+ printf("Total Marks:\t\t%d\n", s.maths+s.mech+s.bio+s.elec+s.cs+s.chem);
+ printf("---------------------------------------------------\n");
+ printf("===================================================\n");
+ fprintf(fg,"===================================================\n");
+ fprintf(fg,"MARKSHEET OF COLLEGE:PES UNIVERSITY\n");
+ fprintf(fg,"===================================================\n");
+ fprintf(fg,"Roll No.: %d Student Name: %s\n", s.roll, s.name);
+ fprintf(fg,"---------------------------------------------------\n");
+ fprintf(fg,"SUBJECT\t\t\tMARKS\n");
+ fprintf(fg,"MATHS\t\t\t %d \n", s.maths);
+ fprintf(fg,"MECHANICS\t\t %d \n", s.mech);
+ fprintf(fg,"BIOLOGY\t\t\t %d \n", s.bio);
+ fprintf(fg,"ELECTRONICS\t\t %d \n", s.elec);
+ fprintf(fg,"COMPUTER SCIENCE %d \n", s.cs);
+ fprintf(fg,"CHEMISTRY\t\t %d \n", s.chem);
+ fprintf(fg,"---------------------------------------------------\n");
+ fprintf(fg,"Total Marks:\t\t%d\n", s.maths+s.mech+s.bio+s.elec+s.cs+s.chem);
+ fprintf(fg,"---------------------------------------------------\n");
+ fprintf(fg,"===================================================\n");
+ fclose(fg);
+ 
+ 
+ 
+}
